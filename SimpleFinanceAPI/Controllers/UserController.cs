@@ -8,10 +8,26 @@ namespace SimpleFinanceAPI.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        [HttpGet]
-        public IActionResult Index()
+        private readonly IUserRepository _userRepository;
+      
+        public UserController(IUserRepository userRepository)
         {
-            return View();
+            _userRepository = userRepository;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UserLogin(string userName, string password)
+        {
+            var user = await _userRepository.GetUserByUsernameAndPassword(userName, password);
+
+            if (user != null)
+            {
+                return Ok(user);
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
     }
 }
