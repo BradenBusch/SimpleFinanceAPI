@@ -4,6 +4,7 @@ namespace SimpleFinanceAPI.Models
 {
     public class User
     {
+        // i believe using a cookie to save the user id in teh session would be enough
         [Key]
         public Guid UserId { get; set; }
         public string UserName { get; set; } = string.Empty;

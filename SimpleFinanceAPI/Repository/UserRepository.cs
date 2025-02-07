@@ -1,9 +1,12 @@
-﻿using SimpleFinanceAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SimpleFinanceAPI.Data;
+using SimpleFinanceAPI.Interfaces;
 using SimpleFinanceAPI.Models;
+
 
 namespace SimpleFinanceAPI.Repository
 {
-    public class UserRepository : Interfaces.IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
 
@@ -12,21 +15,21 @@ namespace SimpleFinanceAPI.Repository
             _context = context;
         }
 
-        public ICollection<User> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
         {
-            return _context.User.ToList();
+            return await _context.User.ToListAsync();
         }
 
-        public User GetUserByUserId(Guid userId)
+        public async Task<User> GetUserByUserId(Guid userId)
         {
-            return _context.User.Where(u => u.UserId == userId).First();
+            return await _context.User.Where(u => u.UserId == userId).FirstAsync();
         }
 
-        public User GetUserByUsernameAndPassword(string username, string password)
+        public async Task<User> GetUserByUsernameAndPassword(string username, string password)
         {
-            return _context.User
+            return await _context.User
                 .Where(u => u.UserName.Equals(username) && u.UserPassword.Equals(password))
-                .First();
+                .FirstAsync();
         }
     }
 }
